@@ -1,0 +1,67 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# UI Components Guide
+
+This project uses a shadcn/ui-inspired component system located in `app/components/ui/`. All UI components follow consistent patterns and use modern React patterns.
+
+## Component Architecture
+
+### Core Components
+
+- **[Button](mdc:app/components/ui/button.tsx)** - Primary interactive element with multiple variants and sizes
+- **[Form](mdc:app/components/ui/form.tsx)** - Complete form system with validation and accessibility
+- **[Label](mdc:app/components/ui/label.tsx)** - Accessible form labels
+- **[Textarea](mdc:app/components/ui/textarea.tsx)** - Multi-line text input component
+
+## Component Patterns
+
+### Design System Features
+- Uses **class-variance-authority (cva)** for variant management
+- **Radix UI** primitives for accessibility and behavior
+- **Tailwind CSS** for styling with design tokens
+- **TypeScript** with proper prop typing and generics
+
+### Button Component
+The [button.tsx](mdc:app/components/ui/button.tsx) uses:
+- `cva` for variant management with `default`, `destructive`, `outline`, `secondary`, `ghost`, `link`
+- Size variants: `default`, `sm`, `lg`, `icon`
+- `asChild` pattern for polymorphic components
+- Focus states and accessibility attributes
+
+### Form System
+The [form.tsx](mdc:app/components/ui/form.tsx) provides:
+- `react-hook-form` integration
+- Context-based field management
+- Automatic error handling and validation states
+- Components: `Form`, `FormField`, `FormItem`, `FormLabel`, `FormControl`, `FormDescription`, `FormMessage`
+- `useFormField` hook for accessing form state
+
+## Usage Guidelines
+
+### Importing Components
+```tsx
+import { Button } from "~/components/ui/button"
+import { Form, FormField, FormItem, FormLabel, FormControl } from "~/components/ui/form"
+```
+
+### Component Composition
+- Always use `cn()` utility from [utils.ts](mdc:app/lib/utils.ts) for className merging
+- Follow the `data-slot` pattern for component identification
+- Use TypeScript generics for form components
+- Prefer composition over prop drilling
+
+### Styling Conventions
+- Use Tailwind CSS classes
+- Follow design token naming (primary, secondary, destructive, etc.)
+- Include focus-visible states for accessibility
+- Support dark mode variants
+
+## Development Notes
+- Components are designed to be copy-paste friendly
+- Each component exports both the component and any related utilities
+- All components support ref forwarding and standard HTML attributes
+- Form components integrate seamlessly with react-hook-form
+
