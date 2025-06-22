@@ -57,6 +57,8 @@ const resources = [
 				height="20"
 				viewBox="0 0 20 20"
 				fill="none"
+				aria-label="React Router"
+				role="img"
 				className="stroke-gray-600 group-hover:stroke-current dark:stroke-gray-300"
 			>
 				<path
@@ -77,6 +79,8 @@ const resources = [
 				height="20"
 				viewBox="0 0 24 20"
 				fill="none"
+				aria-label="Discord"
+				role="img"
 				className="stroke-gray-600 group-hover:stroke-current dark:stroke-gray-300"
 			>
 				<path
