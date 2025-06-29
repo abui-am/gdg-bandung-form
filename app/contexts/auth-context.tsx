@@ -22,13 +22,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		isLoading: isProfileLoading,
 		error: profileError,
 	} = useProfile({
-		enabled:
-			typeof window !== "undefined" &&
-			!!localStorage.getItem("auth_token") &&
-			!user,
+		enabled: typeof window !== "undefined" && !!localStorage.getItem("auth_token"),
 		retry: false,
 		queryKey: ["profile"],
 	});
+
+	// Debug logging for profile query
+	useEffect(() => {
+		console.log("Profile query state:", { 
+			profileData, 
+			isProfileLoading, 
+			profileError,
+			hasToken: typeof window !== "undefined" && !!localStorage.getItem("auth_token")
+		});
+	}, [profileData, isProfileLoading, profileError]);
 
 	const logoutMutation = useLogout({
 		onSuccess: () => {
@@ -39,6 +46,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		},
 	});
 
+	// Listen for token changes via custom event
+	useEffect(() => {
+		const handleTokenChange = (e: CustomEvent) => {
+			console.log("Auth token changed via custom event", { 
+				token: e.detail.token,
+				action: e.detail.action 
+			});
+			if (e.detail.action === "remove" && user) {
+				// Token was removed, clear user
+				setUser(null);
+			}
+		};
+
+		window.addEventListener("authTokenChanged", handleTokenChange as EventListener);
+		return () => window.removeEventListener("authTokenChanged", handleTokenChange as EventListener);
+	}, [user]);
+
 	useEffect(() => {
 		if (typeof window === "undefined") {
 			setIsInitialized(true);
@@ -46,15 +70,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		}
 
 		const token = localStorage.getItem("auth_token");
+		console.log("Auth context initialization", { token, user, profileData });
+		
 		if (!token) {
 			setIsInitialized(true);
 			return;
 		}
 
 		if (profileData) {
+			console.log("Setting user from profile data", { profileData });
 			setUser(profileData);
 			setIsInitialized(true);
 		} else if (profileError) {
+			console.log("Profile error, clearing token", { profileError });
 			// Token is invalid
 			localStorage.removeItem("auth_token");
 			setIsInitialized(true);

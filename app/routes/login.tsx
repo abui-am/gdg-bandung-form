@@ -16,27 +16,36 @@ export function meta() {
 
 export default function Login() {
 	const navigate = useNavigate();
-	const { isAuthenticated, isLoading } = useAuth();
+	const { isAuthenticated, isLoading, user } = useAuth();
 	const emailId = useId();
 	const passwordId = useId();
-
 	const [formData, setFormData] = useState<LoginRequest>({
 		email: "",
 		password: "",
 	});
 	const [errors, setErrors] = useState<Partial<LoginRequest>>({});
 
+	// Debug logging
+	useEffect(() => {
+		console.log("Login component state:", { isAuthenticated, isLoading, user });
+	}, [isAuthenticated, isLoading, user]);
+
 	// Redirect if already authenticated
 	useEffect(() => {
 		if (!isLoading && isAuthenticated) {
+			console.log("User is authenticated, redirecting to home", { user });
 			navigate("/", { replace: true });
 		}
-	}, [isAuthenticated, isLoading, navigate]);
+	}, [isAuthenticated, isLoading, navigate, user]);
 
 	const loginMutation = useLogin({
-		onSuccess: () => {
-			// The token is automatically set by the mutation
-			navigate("/", { replace: true });
+		onSuccess: (data) => {
+			console.log("Login successful, token set", { token: data.token });
+			// The profile query will be invalidated and refetched automatically
+
+			navigate("/");
+
+			console.log("navigate", navigate);
 		},
 		onError: (error: any) => {
 			console.error("Login error:", error);
@@ -158,6 +167,41 @@ export default function Login() {
 							{loginMutation.isPending ? "Signing in..." : "Sign in"}
 						</Button>
 					</div>
+
+					{/* Debug section - remove in production */}
+					{import.meta.env.DEV && (
+						<div className="mt-4 p-4 bg-gray-100 rounded">
+							<h3 className="text-sm font-medium mb-2">Debug Info:</h3>
+							<pre className="text-xs">
+								{JSON.stringify(
+									{
+										isAuthenticated,
+										isLoading,
+										hasUser: !!user,
+										hasToken: !!localStorage.getItem("auth_token"),
+									},
+									null,
+									2,
+								)}
+							</pre>
+							<Button
+								type="button"
+								variant="outline"
+								size="sm"
+								className="mt-2"
+								onClick={() => {
+									console.log("Current auth state:", {
+										isAuthenticated,
+										isLoading,
+										user,
+										token: localStorage.getItem("auth_token"),
+									});
+								}}
+							>
+								Log Auth State
+							</Button>
+						</div>
+					)}
 
 					<div className="text-center">
 						<p className="text-sm text-gray-600">

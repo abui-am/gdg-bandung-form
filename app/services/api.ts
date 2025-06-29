@@ -21,11 +21,19 @@ export const setAuthToken = (token: string | null) => {
 		apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 		if (typeof window !== "undefined") {
 			localStorage.setItem("auth_token", token);
+			// Dispatch custom event for token change
+			window.dispatchEvent(new CustomEvent("authTokenChanged", { 
+				detail: { token, action: "set" } 
+			}));
 		}
 	} else {
 		delete apiClient.defaults.headers.common["Authorization"];
 		if (typeof window !== "undefined") {
 			localStorage.removeItem("auth_token");
+			// Dispatch custom event for token change
+			window.dispatchEvent(new CustomEvent("authTokenChanged", { 
+				detail: { token: null, action: "remove" } 
+			}));
 		}
 	}
 };
