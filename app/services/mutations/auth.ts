@@ -20,6 +20,7 @@ export const useLogin = (
 			setAuthToken(data.token);
 			// Invalidate profile query to trigger refetch
 			queryClient.invalidateQueries({ queryKey: authKeys.profile() });
+			// Call the original onSuccess if provided
 			options?.onSuccess?.(data, variables, context);
 		},
 	});
@@ -29,6 +30,8 @@ export const useLogin = (
 export const useRegister = (
 	options?: UseMutationOptions<AuthResponse, Error, RegisterRequest>,
 ) => {
+	const queryClient = useQueryClient();
+
 	return useMutation<AuthResponse, Error, RegisterRequest>({
 		mutationFn: (userData: RegisterRequest) =>
 			api.post<AuthResponse>("/auth/register", userData),
@@ -37,6 +40,7 @@ export const useRegister = (
 		onSuccess: (data, variables, context) => {
 			// Set the auth token after successful registration
 			setAuthToken(data.token);
+			// Call the original onSuccess if provided
 			options?.onSuccess?.(data, variables, context);
 		},
 	});

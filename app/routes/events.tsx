@@ -148,19 +148,6 @@ function EventsContent() {
 					<Button onClick={() => setShowCreateForm(true)}>Create Event</Button>
 				</div>
 
-				{/* Mock data notice */}
-				{import.meta.env.DEV &&
-					eventsArray.length > 0 &&
-					!isLoading &&
-					!error && (
-						<div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
-							<p className="text-blue-800 text-sm">
-								📝 <strong>Development Mode:</strong> Showing mock data. Start
-								the backend server to see real data.
-							</p>
-						</div>
-					)}
-
 				{/* Search */}
 				<div className="mb-6">
 					<Input

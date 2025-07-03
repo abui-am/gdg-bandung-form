@@ -10,6 +10,7 @@ import {
 import { AuthProvider } from "./contexts/auth-context";
 import { queryClient } from "./services/query-client";
 import "./app.css";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export const links = () => [
 	{ rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -48,6 +49,7 @@ export default function App() {
 			<AuthProvider>
 				<Outlet />
 			</AuthProvider>
+			<ReactQueryDevtools initialIsOpen={false} />
 		</QueryClientProvider>
 	);
 }
