@@ -83,6 +83,7 @@ export const useDeleteTicket = (
 		onSuccess: (data, variables, context) => {
 			// Remove from cache
 			queryClient.removeQueries({ queryKey: ticketKeys.detail(variables.id) });
+
 			// Invalidate ticket lists for the event
 			queryClient.invalidateQueries({
 				queryKey: ticketKeys.public(variables.eventId),
