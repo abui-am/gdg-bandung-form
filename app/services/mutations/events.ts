@@ -35,12 +35,12 @@ export const useUpdateEvent = (
 	options?: UseMutationOptions<
 		Event,
 		Error,
-		{ id: number; data: UpdateEventRequest }
+		{ id: string; data: UpdateEventRequest }
 	>,
 ) => {
 	const queryClient = useQueryClient();
 
-	return useMutation<Event, Error, { id: number; data: UpdateEventRequest }>({
+	return useMutation<Event, Error, { id: string; data: UpdateEventRequest }>({
 		mutationFn: ({ id, data }) => api.put<Event>(`/events/${id}`, data),
 		...options,
 		onSuccess: (data, variables, context) => {
@@ -59,12 +59,12 @@ export const useUpdateEvent = (
 
 // Delete event mutation
 export const useDeleteEvent = (
-	options?: UseMutationOptions<{ message: string }, Error, number>,
+	options?: UseMutationOptions<{ message: string }, Error, string>,
 ) => {
 	const queryClient = useQueryClient();
 
-	return useMutation<{ message: string }, Error, number>({
-		mutationFn: (id: number) =>
+	return useMutation<{ message: string }, Error, string>({
+		mutationFn: (id: string) =>
 			api.delete<{ message: string }>(`/events/${id}`),
 		...options,
 		onSuccess: (data, variables, context) => {

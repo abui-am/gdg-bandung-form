@@ -32,12 +32,31 @@ function EventDetailContent() {
 	const navigate = useNavigate();
 	const [isEditing, setIsEditing] = useState(false);
 
-	const { data: event, isLoading, error } = useEventDetails(Number(eventId));
+	// Validate eventId
+	const isValidId = eventId;
+	const numericId = isValidId ? parseInt(eventId, 10) : 0;
+
+	const { data: event, isLoading, error } = useEventDetails(eventId || "");
 	const updateEventMutation = useUpdateEvent({
 		onSuccess: () => {
 			setIsEditing(false);
 		},
 	});
+
+	if (!isValidId) {
+		return (
+			<main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+				<div className="px-4 py-6 sm:px-0">
+					<div className="bg-red-50 border border-red-200 rounded-md p-4">
+						<p className="text-red-800">Invalid event ID: {eventId}</p>
+						<Button onClick={() => navigate("/events")} className="mt-2">
+							Back to Events
+						</Button>
+					</div>
+				</div>
+			</main>
+		);
+	}
 
 	if (isLoading) {
 		return (
@@ -61,6 +80,16 @@ function EventDetailContent() {
 								? `Error loading event: ${error.message}`
 								: "Event not found"}
 						</p>
+						{/* Debug information */}
+						<div className="mt-2 text-sm text-red-600">
+							<p>Event ID: {eventId}</p>
+							<p>Parsed ID: {numericId}</p>
+							<p>Error: {error?.message || "No error"}</p>
+							<p>Has Event: {event ? "Yes" : "No"}</p>
+							{error?.message?.includes("Network Error") && (
+								<p className="mt-1">The backend server might not be running.</p>
+							)}
+						</div>
 						<Button onClick={() => navigate("/events")} className="mt-2">
 							Back to Events
 						</Button>
@@ -94,7 +123,7 @@ function EventDetailContent() {
 					<EditEventForm
 						event={event}
 						onSubmit={(data) => {
-							updateEventMutation.mutate({ id: event.id, data });
+							updateEventMutation.mutate({ id: String(event.id), data });
 						}}
 						onCancel={() => setIsEditing(false)}
 						isLoading={updateEventMutation.isPending}
@@ -206,19 +235,19 @@ function EventDetails({ event }: { event: any }) {
 					</h3>
 					<div className="flex space-x-4">
 						<Link
-							to={`/events/${event.id}/form`}
+							to={`/events/${String(event.id)}/form`}
 							className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
 						>
 							Manage Form
 						</Link>
 						<Link
-							to={`/events/${event.id}/tickets`}
+							to={`/events/${String(event.id)}/tickets`}
 							className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
 						>
 							Manage Tickets
 						</Link>
 						<Link
-							to={`/events/${event.id}/registrations`}
+							to={`/events/${String(event.id)}/registrations`}
 							className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
 						>
 							View Registrations
