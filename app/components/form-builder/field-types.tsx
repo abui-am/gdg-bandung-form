@@ -1,4 +1,3 @@
-import type { Label } from "@radix-ui/react-label";
 import type * as React from "react";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
@@ -52,7 +51,7 @@ export function FieldPreview({ field }: FieldPreviewProps) {
 					</Label>
 					<input
 						type="text"
-						placeholder={field.placeholder}
+						placeholder={field.placeholder || "Enter your answer..."}
 						className="w-full px-3 py-2 border rounded-md bg-background"
 						disabled
 					/>
@@ -66,7 +65,10 @@ export function FieldPreview({ field }: FieldPreviewProps) {
 						{field.label}
 						{field.required && <span className="text-destructive ml-1">*</span>}
 					</Label>
-					<Textarea placeholder={field.placeholder} disabled />
+					<Textarea
+						placeholder={field.placeholder || "Enter your answer..."}
+						disabled
+					/>
 				</div>
 			);
 
@@ -79,7 +81,7 @@ export function FieldPreview({ field }: FieldPreviewProps) {
 					</Label>
 					<input
 						type="email"
-						placeholder={field.placeholder || "contoh@email.com"}
+						placeholder={field.placeholder || "Enter your email..."}
 						className="w-full px-3 py-2 border rounded-md bg-background"
 						disabled
 					/>
@@ -97,7 +99,7 @@ export function FieldPreview({ field }: FieldPreviewProps) {
 						className="w-full px-3 py-2 border rounded-md bg-background"
 						disabled
 					>
-						<option>Pilih opsi...</option>
+						<option>{field.placeholder || "Select an option..."}</option>
 						{field.options.map((option) => (
 							<option key={option} value={option}>
 								{option}
@@ -109,12 +111,19 @@ export function FieldPreview({ field }: FieldPreviewProps) {
 
 		case "checkbox":
 			return (
-				<div className="flex items-center space-x-2">
-					<input type="checkbox" className="h-4 w-4" disabled />
+				<div className="space-y-2">
 					<Label>
 						{field.label}
 						{field.required && <span className="text-destructive ml-1">*</span>}
 					</Label>
+					<div className="space-y-2">
+						{field.options?.map((option) => (
+							<div key={option} className="flex items-center space-x-2">
+								<input type="checkbox" className="h-4 w-4" disabled />
+								<Label className="text-sm">{option}</Label>
+							</div>
+						))}
+					</div>
 				</div>
 			);
 

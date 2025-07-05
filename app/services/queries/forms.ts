@@ -6,13 +6,13 @@ import type { Form } from "../types";
 // Query Keys
 export const formKeys = {
 	all: ["forms"] as const,
-	public: (eventId: number) => [...formKeys.all, "public", eventId] as const,
-	edit: (eventId: number) => [...formKeys.all, "edit", eventId] as const,
+	public: (eventId: string) => [...formKeys.all, "public", eventId] as const,
+	edit: (eventId: string) => [...formKeys.all, "edit", eventId] as const,
 };
 
 // Get public form for event
 export const usePublicForm = (
-	eventId: number,
+	eventId: string,
 	options?: UseQueryOptions<Form, Error>,
 ) => {
 	return useQuery<Form, Error>({
@@ -25,7 +25,7 @@ export const usePublicForm = (
 
 // Get form for editing (owner only)
 export const useFormForEdit = (
-	eventId: number,
+	eventId: string,
 	options?: UseQueryOptions<Form, Error>,
 ) => {
 	return useQuery<Form, Error>({

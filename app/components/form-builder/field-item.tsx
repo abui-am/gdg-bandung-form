@@ -25,6 +25,9 @@ export function FieldItem({
 	onDuplicate,
 	onEdit,
 }: FieldItemProps) {
+	// Use a stable value to prevent re-renders that cause focus loss
+	const inputValue = localValue !== undefined ? localValue : field.label;
+
 	const handleRequiredChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.stopPropagation();
 		onUpdateField({
@@ -34,8 +37,9 @@ export function FieldItem({
 	};
 
 	return (
-		<div
-			className={`bg-white rounded-lg shadow-sm border p-6 transition-all duration-200 cursor-pointer ${
+		<button
+			type="button"
+			className={`bg-white rounded-lg shadow-sm border p-6 transition-all duration-200 cursor-pointer w-full text-left ${
 				isEditing
 					? "ring-2 ring-purple-500 border-purple-500"
 					: "hover:shadow-md"
@@ -46,15 +50,20 @@ export function FieldItem({
 					onEdit(field.id);
 				}
 			}}
-			role="button"
-			tabIndex={0}
 		>
+			{/* Debug indicator */}
+			{isEditing && (
+				<div className="absolute top-2 left-2 bg-purple-500 text-white text-xs px-2 py-1 rounded">
+					EDITING: {field.type}
+				</div>
+			)}
+
 			<div className="space-y-4">
 				<div className="flex items-start justify-between">
 					<div className="flex-1">
 						<input
 							type="text"
-							value={localValue ?? field.label}
+							value={inputValue}
 							onChange={(e) => onLabelChange(field.id, e.target.value)}
 							onClick={(e) => {
 								e.stopPropagation();
@@ -83,7 +92,7 @@ export function FieldItem({
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
-								aria-label="Duplicate icon"
+								aria-label="Duplicate field"
 							>
 								<path
 									strokeLinecap="round"
@@ -108,7 +117,7 @@ export function FieldItem({
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
-								aria-label="Delete icon"
+								aria-label="Delete field"
 							>
 								<path
 									strokeLinecap="round"
@@ -145,6 +154,6 @@ export function FieldItem({
 					</div>
 				</div>
 			</div>
-		</div>
+		</button>
 	);
 }

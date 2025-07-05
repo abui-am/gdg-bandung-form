@@ -19,6 +19,7 @@ export const fieldTypes: FieldTypeConfig[] = [
 				viewBox="0 0 24 24"
 				aria-label="Text input icon"
 			>
+				<title>Text input icon</title>
 				<path
 					strokeLinecap="round"
 					strokeLinejoin="round"
@@ -39,6 +40,7 @@ export const fieldTypes: FieldTypeConfig[] = [
 				viewBox="0 0 24 24"
 				aria-label="Paragraph icon"
 			>
+				<title>Paragraph icon</title>
 				<path
 					strokeLinecap="round"
 					strokeLinejoin="round"
@@ -59,6 +61,7 @@ export const fieldTypes: FieldTypeConfig[] = [
 				viewBox="0 0 24 24"
 				aria-label="Email icon"
 			>
+				<title>Email icon</title>
 				<path
 					strokeLinecap="round"
 					strokeLinejoin="round"
@@ -79,6 +82,7 @@ export const fieldTypes: FieldTypeConfig[] = [
 				viewBox="0 0 24 24"
 				aria-label="Dropdown icon"
 			>
+				<title>Dropdown icon</title>
 				<path
 					strokeLinecap="round"
 					strokeLinejoin="round"
@@ -99,6 +103,7 @@ export const fieldTypes: FieldTypeConfig[] = [
 				viewBox="0 0 24 24"
 				aria-label="Checkbox icon"
 			>
+				<title>Checkbox icon</title>
 				<path
 					strokeLinecap="round"
 					strokeLinejoin="round"

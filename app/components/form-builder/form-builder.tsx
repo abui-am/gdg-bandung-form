@@ -42,16 +42,31 @@ export function FormBuilder() {
 	const createField = (type: FieldType): FormField => {
 		const baseField = {
 			id: `field_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-			type,
 			label: `Field ${type}`,
 			required: false,
 		};
 
 		switch (type) {
+			case "text":
+				return { ...baseField, type: "text" };
+			case "paragraph":
+				return { ...baseField, type: "paragraph" };
+			case "email":
+				return { ...baseField, type: "email" };
 			case "dropdown":
-				return { ...baseField, options: ["Opsi 1", "Opsi 2"] };
+				return {
+					...baseField,
+					type: "dropdown",
+					options: ["Opsi 1", "Opsi 2"],
+				};
+			case "checkbox":
+				return {
+					...baseField,
+					type: "checkbox",
+					options: ["Opsi 1", "Opsi 2"],
+				};
 			default:
-				return baseField;
+				return { ...baseField, type: "text" };
 		}
 	};
 

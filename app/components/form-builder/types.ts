@@ -32,6 +32,7 @@ export interface DropdownField extends BaseField {
 
 export interface CheckboxField extends BaseField {
 	type: "checkbox";
+	options: string[];
 }
 
 export type FormField =

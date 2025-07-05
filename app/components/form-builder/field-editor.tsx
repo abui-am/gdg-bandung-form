@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
-import type { DropdownField, FormField } from "./types";
+import type { CheckboxField, DropdownField, FormField } from "./types";
 
 interface FieldEditorProps {
 	field: FormField;
@@ -16,7 +16,20 @@ export function FieldEditor({
 	onDelete,
 	onClose,
 }: FieldEditorProps) {
-	const [localField, setLocalField] = React.useState<FormField>(field);
+	// Ensure checkbox and dropdown fields have options initialized
+	const initializedField = React.useMemo(() => {
+		if (field.type === "checkbox" && !field.options) {
+			return { ...field, options: ["Opsi 1"] };
+		}
+		if (field.type === "dropdown" && !field.options) {
+			return { ...field, options: ["Opsi 1"] };
+		}
+		return field;
+	}, [field]);
+
+	const [localField, setLocalField] =
+		React.useState<FormField>(initializedField);
+
 	const [newOption, setNewOption] = React.useState("");
 
 	const handleSave = () => {
@@ -25,26 +38,32 @@ export function FieldEditor({
 	};
 
 	const handleAddOption = () => {
-		if (newOption.trim() && localField.type === "dropdown") {
+		if (
+			newOption.trim() &&
+			(localField.type === "dropdown" || localField.type === "checkbox")
+		) {
 			const updatedField = {
 				...localField,
 				options: [...localField.options, newOption.trim()],
-			} as DropdownField;
+			} as DropdownField | CheckboxField;
 			setLocalField(updatedField);
 			setNewOption("");
 		}
 	};
 
 	const handleRemoveOption = (index: number) => {
-		if (localField.type === "dropdown") {
+		if (localField.type === "dropdown" || localField.type === "checkbox") {
 			const updatedField = {
 				...localField,
 				options: localField.options.filter((_, i) => i !== index),
-			} as DropdownField;
+			} as DropdownField | CheckboxField;
 			setLocalField(updatedField);
 		}
 	};
 
+	React.useEffect(() => {
+		setLocalField(initializedField);
+	}, [initializedField]);
 	return (
 		<div className="space-y-4 p-4 border rounded-lg bg-background">
 			<div className="flex items-center justify-between">
@@ -115,6 +134,58 @@ export function FieldEditor({
 												...localField,
 												options: updatedOptions,
 											} as DropdownField);
+										}}
+										className="flex-1 px-3 py-2 border rounded-md"
+									/>
+									<Button
+										variant="outline"
+										size="sm"
+										onClick={() => handleRemoveOption(index)}
+									>
+										Hapus
+									</Button>
+								</div>
+							))}
+							<div className="flex items-center gap-2">
+								<input
+									type="text"
+									value={newOption}
+									onChange={(e) => setNewOption(e.target.value)}
+									className="flex-1 px-3 py-2 border rounded-md"
+									placeholder="Tambah opsi baru"
+									onKeyPress={(e) => {
+										if (e.key === "Enter") {
+											e.preventDefault();
+											handleAddOption();
+										}
+									}}
+								/>
+								<Button variant="outline" size="sm" onClick={handleAddOption}>
+									Tambah
+								</Button>
+							</div>
+						</div>
+					</div>
+				)}
+				{localField.type === "checkbox" && (
+					<div className="space-y-2">
+						<Label>Opsi Checkbox</Label>
+						<div className="space-y-2">
+							{(localField.options || []).map((option, index) => (
+								<div
+									key={`${option}-${index}`}
+									className="flex items-center gap-2"
+								>
+									<input
+										type="text"
+										value={option}
+										onChange={(e) => {
+											const updatedOptions = [...localField.options];
+											updatedOptions[index] = e.target.value;
+											setLocalField({
+												...localField,
+												options: updatedOptions,
+											} as CheckboxField);
 										}}
 										className="flex-1 px-3 py-2 border rounded-md"
 									/>

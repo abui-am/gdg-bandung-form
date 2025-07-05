@@ -18,7 +18,7 @@ export const createField = (type: FieldType): FormField => {
 		case "dropdown":
 			return { ...baseField, type: "dropdown", options: ["Opsi 1"] };
 		case "checkbox":
-			return { ...baseField, type: "checkbox" };
+			return { ...baseField, type: "checkbox", options: ["Opsi 1"] };
 		default:
 			return { ...baseField, type: "text" };
 	}

@@ -85,6 +85,11 @@ export function GoogleFormBuilder() {
 		}));
 	};
 
+	const handleEditField = (fieldId: string) => {
+		console.log("Switching editing field from:", editingField, "to:", fieldId);
+		setEditingField(fieldId);
+	};
+
 	const handleSidebarToggle = () => setSidebarOpen(!sidebarOpen);
 
 	return (
@@ -132,7 +137,7 @@ export function GoogleFormBuilder() {
 									onUpdateField={updateField}
 									onDelete={deleteField}
 									onDuplicate={duplicateField}
-									onEdit={setEditingField}
+									onEdit={handleEditField}
 								/>
 							))}
 						</div>

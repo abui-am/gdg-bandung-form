@@ -9,6 +9,7 @@ export const useLogin = (
 	options?: UseMutationOptions<AuthResponse, Error, LoginRequest>,
 ) => {
 	const queryClient = useQueryClient();
+
 	return useMutation<AuthResponse, Error, LoginRequest>({
 		mutationFn: (credentials: LoginRequest) =>
 			api.post<AuthResponse>("/auth/login", credentials),
