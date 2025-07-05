@@ -9,7 +9,6 @@ export function Navigation() {
 	const navItems = [
 		{ path: "/", label: "Dashboard" },
 		{ path: "/events", label: "Events" },
-		{ path: "/form-builder", label: "Form Builder" },
 	];
 
 	return (

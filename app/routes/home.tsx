@@ -21,34 +21,19 @@ export default function Home() {
 							<h2 className="text-2xl font-semibold text-gray-900 mb-6">
 								Dashboard Overview
 							</h2>
-							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+							<div className="flex justify-center">
 								<Link
 									to="/events"
-									className="bg-blue-50 p-4 rounded-lg hover:bg-blue-100 transition-colors"
+									className="bg-blue-50 p-6 rounded-lg hover:bg-blue-100 transition-colors max-w-md w-full"
 								>
-									<h3 className="text-lg font-medium text-blue-900 mb-2">
+									<h3 className="text-xl font-medium text-blue-900 mb-3">
 										Events
 									</h3>
 									<p className="text-blue-700">
-										Manage your upcoming events and registrations
+										Manage your upcoming events, registrations, forms, tickets,
+										and vouchers
 									</p>
 								</Link>
-								<div className="bg-green-50 p-4 rounded-lg">
-									<h3 className="text-lg font-medium text-green-900 mb-2">
-										Forms
-									</h3>
-									<p className="text-green-700">
-										Create and customize registration forms
-									</p>
-								</div>
-								<div className="bg-purple-50 p-4 rounded-lg">
-									<h3 className="text-lg font-medium text-purple-900 mb-2">
-										Analytics
-									</h3>
-									<p className="text-purple-700">
-										View registration stats and insights
-									</p>
-								</div>
 							</div>
 						</div>
 					</div>

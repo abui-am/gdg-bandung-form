@@ -6,7 +6,6 @@ export { FieldItem } from "./field-item";
 export { FieldPreview } from "./field-preview";
 export { FormBuilder } from "./form-builder";
 export { FormHeader } from "./form-header";
-export { GoogleFormBuilder } from "./google-form-builder";
 export { Header } from "./header";
 export { MobileOverlay } from "./mobile-overlay";
 export { Sidebar } from "./sidebar";
