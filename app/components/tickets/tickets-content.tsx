@@ -3,35 +3,35 @@ import { Link } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import {
-	useCreateVoucher,
-	useDeleteVoucher,
-	useEventVouchers,
+	useCreateTicket,
+	useDeleteTicket,
+	useTicketsForManagement,
 } from "~/services";
-import type { CreateVoucherRequest } from "~/services/types";
-import { CreateVoucherForm } from "./create-voucher-form";
-import { VoucherCard } from "./voucher-card";
+import type { CreateTicketRequest } from "~/services/types";
+import { CreateTicketForm } from "./create-ticket-form";
+import { TicketCard } from "./ticket-card";
 
-interface VouchersContentProps {
+interface TicketsContentProps {
 	eventId: string;
 }
 
-export function VouchersContent({ eventId }: VouchersContentProps) {
+export function TicketsContent({ eventId }: TicketsContentProps) {
 	const [showCreateForm, setShowCreateForm] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
 
-	const { data: vouchers, isLoading, error } = useEventVouchers(eventId);
-	const createVoucherMutation = useCreateVoucher({
+	const { data: tickets, isLoading, error } = useTicketsForManagement(eventId);
+	const createTicketMutation = useCreateTicket({
 		onSuccess: () => {
 			setShowCreateForm(false);
 		},
 	});
-	const deleteVoucherMutation = useDeleteVoucher();
+	const deleteTicketMutation = useDeleteTicket();
 
-	// Ensure vouchers is always an array
-	const vouchersArray = vouchers || [];
+	// Ensure tickets is always an array
+	const ticketsArray = tickets || [];
 
-	const filteredVouchers = vouchersArray.filter((voucher) =>
-		voucher.code.toLowerCase().includes(searchTerm.toLowerCase()),
+	const filteredTickets = ticketsArray.filter((ticket) =>
+		ticket.name.toLowerCase().includes(searchTerm.toLowerCase()),
 	);
 
 	if (isLoading) {
@@ -52,7 +52,7 @@ export function VouchersContent({ eventId }: VouchersContentProps) {
 				<div className="px-4 py-6 sm:px-0">
 					<div className="bg-red-50 border border-red-200 rounded-md p-4">
 						<p className="text-red-800">
-							Error loading vouchers: {error.message}
+							Error loading tickets: {error.message}
 						</p>
 						{error.message.includes("Network Error") && (
 							<p className="text-sm text-red-600 mt-2">
@@ -77,61 +77,59 @@ export function VouchersContent({ eventId }: VouchersContentProps) {
 						>
 							← Back to Event
 						</Link>
-						<h1 className="text-3xl font-bold text-gray-900">Vouchers</h1>
+						<h1 className="text-3xl font-bold text-gray-900">Tickets</h1>
 					</div>
-					<Button onClick={() => setShowCreateForm(true)}>
-						Create Voucher
-					</Button>
+					<Button onClick={() => setShowCreateForm(true)}>Create Ticket</Button>
 				</div>
 
 				{/* Search */}
 				<div className="mb-6">
 					<Input
 						type="text"
-						placeholder="Search vouchers by code..."
+						placeholder="Search tickets by name..."
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
 						className="max-w-md"
 					/>
 				</div>
 
-				{/* Create Voucher Form */}
+				{/* Create Ticket Form */}
 				{showCreateForm && (
-					<CreateVoucherForm
+					<CreateTicketForm
 						eventId={eventId}
-						onSubmit={(data: CreateVoucherRequest) => {
-							createVoucherMutation.mutate(data);
+						onSubmit={(data: CreateTicketRequest) => {
+							createTicketMutation.mutate(data);
 						}}
 						onCancel={() => setShowCreateForm(false)}
-						isLoading={createVoucherMutation.isPending}
+						isLoading={createTicketMutation.isPending}
 					/>
 				)}
 
-				{/* Vouchers List */}
+				{/* Tickets List */}
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-					{filteredVouchers.map((voucher) => (
-						<VoucherCard
-							key={voucher.id}
-							voucher={voucher}
+					{filteredTickets.map((ticket) => (
+						<TicketCard
+							key={ticket.id}
+							ticket={ticket}
 							onDelete={() => {
-								if (confirm("Are you sure you want to delete this voucher?")) {
-									deleteVoucherMutation.mutate({
-										id: voucher.id,
+								if (confirm("Are you sure you want to delete this ticket?")) {
+									deleteTicketMutation.mutate({
+										id: ticket.id,
 										eventId: eventId,
 									});
 								}
 							}}
-							isDeleting={deleteVoucherMutation.isPending}
+							isDeleting={deleteTicketMutation.isPending}
 						/>
 					))}
 				</div>
 
-				{filteredVouchers.length === 0 && (
+				{filteredTickets.length === 0 && (
 					<div className="text-center py-12">
 						<p className="text-gray-500 text-lg">
 							{searchTerm
-								? "No vouchers found matching your search."
-								: "No vouchers yet. Create your first voucher!"}
+								? "No tickets found matching your search."
+								: "No tickets yet. Create your first ticket!"}
 						</p>
 					</div>
 				)}
