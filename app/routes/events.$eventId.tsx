@@ -247,6 +247,12 @@ function EventDetails({ event }: { event: any }) {
 							Manage Tickets
 						</Link>
 						<Link
+							to={`/events/${String(event.id)}/vouchers`}
+							className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors"
+						>
+							Manage Vouchers
+						</Link>
+						<Link
 							to={`/events/${String(event.id)}/registrations`}
 							className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
 						>

@@ -68,7 +68,7 @@ export const useDeleteVoucher = (
 	options?: UseMutationOptions<
 		{ message: string },
 		Error,
-		{ id: number; eventId: number }
+		{ id: number; eventId: string }
 	>,
 ) => {
 	const queryClient = useQueryClient();
@@ -76,7 +76,7 @@ export const useDeleteVoucher = (
 	return useMutation<
 		{ message: string },
 		Error,
-		{ id: number; eventId: number }
+		{ id: number; eventId: string }
 	>({
 		mutationFn: ({ id }) => api.delete<{ message: string }>(`/vouchers/${id}`),
 		...options,
